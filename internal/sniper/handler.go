@@ -48,6 +48,8 @@ func (s *Sniper) handleEvent(raw any) {
 func (s *Sniper) handleMessage(e *events.Message) {
 	t0 := time.Now()
 
+	slog.Info("CRITICAL DEBUG: Raw message event triggered", "sender", e.Info.Sender.String(), "isGroup", e.Info.IsGroup)
+
 	// (1) Own-message echo guard — skip anything the bot itself sent.
 	if e.Info.IsFromMe && s.isOwnMsgID(e.Info.ID) {
 		return
@@ -64,15 +66,10 @@ func (s *Sniper) handleMessage(e *events.Message) {
 		return
 	}
 
-	// (3) Scope filter — three modes:
-	//       a) scanAll  → accept every chat (groups + DMs)
-	//       b) hasTarget → accept ONLY the configured group
-	//       c) neither  → no scope configured, drop everything
+	// (3) Scope filter — modified to scan all if no target is provided.
 	switch {
-	case s.scanAll:
-		// fall through to keyword matching
-	case !s.hasTarget:
-		return
+	case s.scanAll || !s.hasTarget:
+		// fall through to keyword matching (listen to ALL if no specific target is set)
 	case e.Info.Chat.User != s.targetGroupJID.User ||
 		e.Info.Chat.Server != s.targetGroupJID.Server:
 		return
