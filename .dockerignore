@@ -1,0 +1,22 @@
+# Never bake secrets or host files into the image
+.env
+.env.*
+.git/
+.gitignore
+.vscode/
+.idea/
+README.md
+*.md
+
+# Legacy Node.js artefacts (not part of the Go build)
+node_modules/
+package.json
+package-lock.json
+baileys-bot.js
+auth_info_baileys/
+
+# Go build artefacts (we want the multi-stage build to produce fresh ones)
+/sniper
+/bin/
+/out/
+*.test

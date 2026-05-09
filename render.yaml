@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: wa-sniper
+    runtime: docker
+    plan: free
+    region: frankfurt            # change to "oregon" or "singapore" if closer to your audience
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        sync: false              # set manually in the Render dashboard (Neon pooled URL)
+      - key: TARGET_GROUP_JID
+        sync: false              # fill in AFTER pairing via the !id command
+      - key: TARGET_KEYWORDS
+        value: "التسجيل,الجمعة"
+      - key: PAIR_TOKEN
+        generateValue: true      # Render generates a random secret automatically
+      - key: LOG_LEVEL
+        value: "INFO"
+      - key: TZ
+        value: "Asia/Riyadh"
