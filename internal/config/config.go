@@ -58,6 +58,8 @@ func Load() (*Config, error) {
 		return nil, errors.New("TARGET_KEYWORDS parsed to empty list")
 	}
 
+	fmt.Printf("DEBUG: Loaded Keywords: [%s]\n", strings.Join(c.TargetKeywords, ","))
+
 	return c, nil
 }
 

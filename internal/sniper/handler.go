@@ -2,6 +2,7 @@ package sniper
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"strings"
 	"time"
@@ -82,6 +83,9 @@ func (s *Sniper) handleMessage(e *events.Message) {
 	if text == "" {
 		return
 	}
+
+	fmt.Printf("DEBUG: Incoming message from %s: %s\n", e.Info.Sender.String(), text)
+	fmt.Printf("DEBUG: Checking message for keywords...\n")
 
 	// (5) AND-match all keywords. strings.Contains is SIMD-optimized in the Go runtime.
 	for i := range s.keywords {
